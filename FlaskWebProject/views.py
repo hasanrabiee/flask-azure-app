@@ -13,6 +13,7 @@ from FlaskWebProject.models import User, Post
 import msal
 import uuid
 
+
 imageSourceUrl = 'https://'+ app.config['BLOB_ACCOUNT']  + '.blob.core.windows.net/' + app.config['BLOB_CONTAINER']  + '/'
 redirect_uri=app.config["REDIRECT_URI"]
 
@@ -121,7 +122,7 @@ def logout():
     return redirect(url_for('login'))
 
 def _load_cache():
-    cache = SerializableTokenCache()
+    cache = msal.SerializableTokenCache()
     if session.get("token_cache"):
         cache.deserialize(session["token_cache"])
     return cache
