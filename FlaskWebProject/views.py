@@ -14,6 +14,7 @@ import msal
 import uuid
 
 imageSourceUrl = 'https://'+ app.config['BLOB_ACCOUNT']  + '.blob.core.windows.net/' + app.config['BLOB_CONTAINER']  + '/'
+redirect_uri=app.config["REDIRECT_URI"]
 
 @app.route('/')
 @app.route('/home')
@@ -78,7 +79,6 @@ def login():
     return render_template('login.html', title='Sign In', form=form, auth_url=auth_url)
 
 @app.route(Config.REDIRECT_PATH)  # Its absolute URL must match your app's redirect_uri set in AAD
-@app.route(Config.REDIRECT_PATH)
 def authorized():
     if request.args.get('state') != session.get("state"):
         return redirect(url_for("home"))
@@ -92,8 +92,8 @@ def authorized():
         result = msal_app.acquire_token_by_authorization_code(
             request.args['code'],
             scopes=Config.SCOPE,
-            redirect_uri=url_for('authorized', _external=True)
-        )
+            redirect_uri=redirect_uri)
+        
 
         if "error" in result:
             return render_template("auth_error.html", result=result)
@@ -142,5 +142,5 @@ def _build_auth_url(authority=None, scopes=None, state=None):
     return msal_app.get_authorization_request_url(
         scopes or [],
         state=state,
-        redirect_uri=url_for('authorized', _external=True)
-    )
+        redirect_uri=redirect_uri)
+    
