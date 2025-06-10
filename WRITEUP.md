@@ -1,12 +1,1 @@
-# Write-up Template
-
-### Analyze, choose, and justify the appropriate resource option for deploying the app.
-
-*For **both** a VM or App Service solution for the CMS app:*
-- *Analyze costs, scalability, availability, and workflow*
-- *Choose the appropriate solution (VM or App Service) for deploying the app*
-- *Justify your choice*
-
-### Assess app changes that would change your decision.
-
-*Detail how the app and any other needs would have to change for you to change your decision in the last section.* 
+For deploying the CMS app, Azure App Service is the more appropriate choice over a Virtual Machine (VM) when considering cost, scalability, availability, and workflow. App Service offers a more cost-effective solution due to its pay-as-you-go pricing and managed infrastructure, eliminating the need for manual OS maintenance and reducing idle resource costs. It also provides built-in autoscaling and high availability, which are essential for handling varying traffic loads and ensuring uptime without additional configuration. The deployment workflow is significantly simplified through native integration with GitHub, Azure DevOps, and deployment slots, enabling streamlined CI/CD and faster iteration. App Service is well-suited for web-based, stateless applications like CMS platforms, allowing the development team to focus on the application rather than infrastructure management. However, the decision might change if the CMS app evolves to require a custom operating system, low-level system access, or persistent background services that the App Service environment does not support. In such cases, a VM would be more suitable as it provides full control over the environment and supports advanced customizations, stateful architectures, and long-running background processes. Therefore, unless the app requires a high level of customization or system-level control, Azure App Service remains the optimal solution.
