@@ -12,6 +12,9 @@ from flask_login import current_user, login_user, logout_user, login_required
 from FlaskWebProject.models import User, Post
 import msal
 import uuid
+import logging
+
+logging.basicConfig(level=logging.INFO)
 
 
 imageSourceUrl = 'https://'+ app.config['BLOB_ACCOUNT']  + '.blob.core.windows.net/' + app.config['BLOB_CONTAINER']  + '/'
@@ -68,6 +71,7 @@ def login():
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.username.data).first()
         if user is None or not user.check_password(form.password.data):
+            logging.info(f"Failed login attempt for username: {form.username.data}")
             flash('Invalid username or password')
             return redirect(url_for('login'))
         login_user(user, remember=form.remember_me.data)
@@ -97,7 +101,10 @@ def authorized():
         
 
         if "error" in result:
+            logging.error(f"MSAL login error: {result}")
             return render_template("auth_error.html", result=result)
+        else:
+            logging.info("Successful Microsoft login for user")
 
         session["user"] = result.get("id_token_claims")
         _save_cache(cache)
